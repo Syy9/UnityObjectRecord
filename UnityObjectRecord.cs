@@ -34,7 +34,7 @@ namespace Syy.Tools
 
         void Init()
         {
-            string value = EditorPrefs.GetString(Key, "");
+            string value = EditorUserSettings.GetConfigValue(Key) ?? string.Empty;
             _paths = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
@@ -63,9 +63,9 @@ namespace Syy.Tools
 
                             if (!string.IsNullOrEmpty(path))
                             {
-                                string value = EditorPrefs.GetString(Key, "");
+                                string value = EditorUserSettings.GetConfigValue(Key) ?? string.Empty;
                                 value = string.IsNullOrEmpty(value) ? value : value + ",";
-                                EditorPrefs.SetString(Key, value + path);
+                                EditorUserSettings.SetConfigValue(Key, value + path);
                                 Init();
                             }
                         }
@@ -128,7 +128,7 @@ namespace Syy.Tools
                     if (!string.IsNullOrEmpty(deletePath))
                     {
                         _paths.Remove(deletePath);
-                        EditorPrefs.SetString(Key, string.Join(",", _paths));
+                        EditorUserSettings.SetConfigValue(Key, string.Join(",", _paths));
                     }
                 }
 
@@ -138,7 +138,7 @@ namespace Syy.Tools
                 {
                     if (EditorUtility.DisplayDialog("UnityObjectRecord", "Are you sure you want to reset record?", "Reset", "Cancel"))
                     {
-                        EditorPrefs.SetString(Key, "");
+                        EditorUserSettings.SetConfigValue(Key, "");
                         Init();
                     }
                 }
